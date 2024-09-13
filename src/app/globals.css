@@ -25,6 +25,18 @@
     }
   }
   
+  @keyframes wave {
+    0% {
+      transform: translateX(0) translateY(0) rotate(180deg);
+    }
+    50% {
+      transform: translateX(-25px) translateY(2px) rotate(180deg); /* Ubah dari 10px menjadi 5px */
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(180deg);
+    }
+  }
+
   .animate-fade-in-up {
     animation: fadeInUp 0.5s ease-out forwards;
   }
@@ -39,4 +51,8 @@
   
   .animate-float {
     animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-wave {
+    animation: wave 10s ease-in-out infinite;
   }
