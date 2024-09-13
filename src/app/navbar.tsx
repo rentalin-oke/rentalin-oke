@@ -54,12 +54,6 @@ export default function Navbar() {
           >
             Login
           </a>
-          <a
-            href="/auth/register"
-            className="text-black bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-xs sm:text-sm px-3 sm:px-5 py-1.5 sm:py-2.5 text-center dark:bg-white dark:hover:bg-gray-200 dark:focus:ring-blue-800"
-          >
-            Register
-          </a>
           <button
             onClick={toggleMenu}
             type="button"
