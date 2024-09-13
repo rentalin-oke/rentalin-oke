@@ -1,14 +1,57 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const validateName = (value: string) => {
+    if (/[0-9!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      setNameError("Names cannot contain numbers or special characters.");
+    } else {
+      setNameError("");
+    }
+    setName(value);
+  };
+
+  const validatePassword = (value: string) => {
+    if (value.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+    } else {
+      setPasswordError("");
+    }
+    setPassword(value);
+  };
+
+  const validateConfirmPassword = (value: string) => {
+    if (value !== password) {
+      setConfirmPasswordError("Password does not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+    setConfirmPassword(value);
   };
 
   const variants = {
@@ -45,8 +88,8 @@ export default function Login() {
               animate="center"
               exit="exit"
               transition={{
-                rotateY: { type: "spring", stiffness: 100 },
-                opacity: { duration: 0.2 },
+                rotateY: { type: "spring", stiffness: 200, damping: 20 },
+                opacity: { duration: 0.1 },
               }}
             >
               <div className="px-5 py-7">
@@ -62,10 +105,23 @@ export default function Login() {
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       Password
                     </label>
-                    <input
-                      type="password"
-                      className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full pr-10"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center justify-center text-sm leading-5"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? (
+                          <FaEyeSlash className="text-gray-500" />
+                        ) : (
+                          <FaEye className="text-gray-500" />
+                        )}
+                      </button>
+                    </div>
                     <button
                       type="button"
                       className="transition duration-200 bg-blue-800 hover:bg-blue-950 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
@@ -90,12 +146,17 @@ export default function Login() {
                 ) : (
                   <>
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
-                      Name 
+                      Name
                     </label>
                     <input
                       type="text"
-                      className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                      className="border rounded-lg px-3 py-2 mt-1 mb-1 text-sm w-full"
+                      value={name}
+                      onChange={(e) => validateName(e.target.value)}
                     />
+                    {nameError && (
+                      <p className="text-red-500 text-xs mb-3">{nameError}</p>
+                    )}
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       E-mail
                     </label>
@@ -106,17 +167,59 @@ export default function Login() {
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       Password
                     </label>
-                    <input
-                      type="password"
-                      className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="border rounded-lg px-3 py-2 mt-1 mb-1 text-sm w-full"
+                        value={password}
+                        onChange={(e) => validatePassword(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? (
+                          <FaEyeSlash className="text-gray-500" />
+                        ) : (
+                          <FaEye className="text-gray-500" />
+                        )}
+                      </button>
+                    </div>
+                    {passwordError && (
+                      <p className="text-red-500 text-xs mb-3">
+                        {passwordError}
+                      </p>
+                    )}
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       Confirm Password
                     </label>
-                    <input
-                      type="password"
-                      className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        className="border rounded-lg px-3 py-2 mt-1 mb-1 text-sm w-full"
+                        value={confirmPassword}
+                        onChange={(e) =>
+                          validateConfirmPassword(e.target.value)
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        onClick={toggleConfirmPasswordVisibility}
+                      >
+                        {showConfirmPassword ? (
+                          <FaEyeSlash className="text-gray-500" />
+                        ) : (
+                          <FaEye className="text-gray-500" />
+                        )}
+                      </button>
+                    </div>
+                    {confirmPasswordError && (
+                      <p className="text-red-500 text-xs mb-3">
+                        {confirmPasswordError}
+                      </p>
+                    )}
                     <button
                       type="button"
                       className="transition duration-200 bg-blue-800 hover:bg-blue-950 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
@@ -176,8 +279,15 @@ export default function Login() {
                 type="button"
                 className="transition duration-200 border border-gray-200 text-gray-500 w-1/3 py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block flex items-center justify-center"
               >
-                <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" fill="#000000"/>
+                <svg
+                  className="w-4 h-4 mr-2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+                    fill="#000000"
+                  />
                 </svg>
                 Apple
               </button>
@@ -229,7 +339,9 @@ export default function Login() {
                       d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
                     />
                   </svg>
-                  <span className="inline-block ml-1">{isLogin ? "Register" : "Login"}</span>
+                  <span className="inline-block ml-1">
+                    {isLogin ? "Register" : "Login"}
+                  </span>
                 </button>
               </div>
             </div>
