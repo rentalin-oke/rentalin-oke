@@ -206,7 +206,7 @@ export default function Home() {
               <div className="group w-full h-full">
                 <div className="relative h-full">
                   <img
-                    src="images/contact_us.png"
+                    src="images/contactus2.png"
                     alt="ContactUs tailwind section"
                     className="w-full h-full lg:rounded-l-2xl rounded-2xl bg-blend-multiply bg-indigo-700 object-cover"
                   />
