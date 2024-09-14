@@ -20,11 +20,10 @@ export default function Home() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center relative z-10">
             <div className="w-full md:w-1/2 pr-4 md:pl-32 mb-8 md:mb-0">
               <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 leading-tight animate-fade-in-up text-center md:text-left">
-                Selamat datang di Rentalin
+                Welcome to Rentalin
               </h1>
               <p className="text-base sm:text-lg mb-6 sm:mb-8 opacity-90 animate-fade-in-up animation-delay-200 text-center md:text-left">
-                Aplikasi yang membuat perjalanan lebih nyaman, siap membantu
-                mobilitas kapan saja dan di mana saja
+              Applications that make travel more comfortable, ready to help mobility anytime and anywhere
               </p>
               <div className="animate-fade-in-up animation-delay-400 flex justify-center md:justify-start">
                 <button className="bg-white text-black px-4 sm:px-8 py-2 sm:py-4 rounded-full text-sm sm:text-lg font-semibold hover:bg-opacity-90 transition duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1 animate-float">
@@ -362,7 +361,7 @@ export default function Home() {
             />
           </div>
           <div className="text-white text-xs sm:text-sm">
-            © 2024 Rentalin. Hak Cipta Dilindungi Undang-Undang.
+            © 2024 Rentalin. All rights reserved.
           </div>
         </div>
       </footer>
