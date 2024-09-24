@@ -1,19 +1,26 @@
+
 "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../../api/auth/Context";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState(""); // Tambahkan state untuk nama
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nameError, setNameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const { login } = useAuth();
+  const router = useRouter();
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -54,6 +61,21 @@ export default function Login() {
     setConfirmPassword(value);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isLogin) {
+      const success = login(email, password);
+      if (success) {
+        router.push('/');
+      } else {
+        alert('Login gagal. Periksa kembali email dan password Anda.');
+      }
+    } else {
+      // Logika untuk menangani registrasi
+      console.log("Register submitted");
+    }
+  };
+
   const variants = {
     enter: {
       rotateY: 90,
@@ -92,15 +114,18 @@ export default function Login() {
                 opacity: { duration: 0.1 },
               }}
             >
-              <div className="px-5 py-7">
+              <form onSubmit={handleSubmit} className="px-5 py-7">
                 {isLogin ? (
                   <>
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       E-mail
                     </label>
                     <input
-                      type="text"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                      required
                     />
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       Password
@@ -108,7 +133,10 @@ export default function Login() {
                     <div className="relative">
                       <input
                         type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full pr-10"
+                        required
                       />
                       <button
                         type="button"
@@ -122,26 +150,6 @@ export default function Login() {
                         )}
                       </button>
                     </div>
-                    <button
-                      type="button"
-                      className="transition duration-200 bg-blue-800 hover:bg-blue-950 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
-                    >
-                      <span className="inline-block mr-2">Login</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-4 h-4 inline-block"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </button>
                   </>
                 ) : (
                   <>
@@ -163,6 +171,8 @@ export default function Login() {
                     <input
                       type="email"
                       className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <label className="font-semibold text-sm text-gray-600 pb-1 block">
                       Password
@@ -220,29 +230,31 @@ export default function Login() {
                         {confirmPasswordError}
                       </p>
                     )}
-                    <button
-                      type="button"
-                      className="transition duration-200 bg-blue-800 hover:bg-blue-950 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
-                    >
-                      <span className="inline-block mr-2">Register</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-4 h-4 inline-block"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                        />
-                      </svg>
-                    </button>
                   </>
                 )}
-              </div>
+                <button
+                  type="submit"
+                  className="transition duration-200 bg-blue-800 hover:bg-blue-950 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+                >
+                  <span className="inline-block mr-2">
+                    {isLogin ? "Login" : "Register"}
+                  </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-4 h-4 inline-block"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d={isLogin ? "M17 8l4 4m0 0l-4 4m4-4H3" : "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"}
+                    />
+                  </svg>
+                </button>
+              </form>
             </motion.div>
           </AnimatePresence>
           <div className="p-5">
