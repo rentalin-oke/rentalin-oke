@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,7 +13,7 @@ export default function Navbar() {
   const { user, login, logout } = useAuth(); // Gunakan hook autentikasi
 
   // Tambahkan pengecekan rute
-  const hideNavbarRoutes = ['/auth/login', '/auth/register'];
+  const hideNavbarRoutes = ["/auth/login", "/auth/register"];
   const shouldHideNavbar = hideNavbarRoutes.includes(pathname);
 
   useEffect(() => {
@@ -24,12 +22,12 @@ export default function Navbar() {
 
   // Tambahkan useEffect baru untuk memeriksa status login
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser && !user) {
       // Jika ada data user di localStorage dan belum ada user di state, update state user
       const userData = JSON.parse(storedUser);
       // Pastikan fungsi login dari useAuth dipanggil untuk memperbarui state global
-      login(userData.email, ''); // Password kosong karena kita tidak menyimpan password
+      login(userData.email, ""); // Password kosong karena kita tidak menyimpan password
     }
   }, [user, login]);
 
@@ -48,7 +46,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/');
+    router.push("/");
   };
 
   const toggleSidebar = () => {
@@ -86,19 +84,29 @@ export default function Navbar() {
                 onClick={toggleSidebar}
                 className="text-white hover:text-gray-300 focus:outline-none transition duration-300 ease-in-out transform hover:scale-110"
               >
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </button>
-            </>
-          ) : (
-            <a
-              href="/auth/login"
-              className="text-black bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-xs sm:text-sm px-3 sm:px-5 py-1.5 sm:py-2.5 text-center dark:bg-white dark:hover:bg-gray-200 dark:focus:ring-blue-800"
-            >
-              Login
-            </a>
-          )}
+            </> 
+            // <a
+            //   href="/auth/login"
+            //   className="text-black bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-xs sm:text-sm px-3 sm:px-5 py-1.5 sm:py-2.5 text-center dark:bg-white dark:hover:bg-gray-200 dark:focus:ring-blue-800"
+            // >
+            //   Login
+            // </a>
+          ) : null}
           <button
             onClick={toggleMenu}
             type="button"
@@ -189,19 +197,37 @@ export default function Navbar() {
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 right-0 w-64 bg-blue-900 text-white p-6 transform transition-all duration-500 ease-in-out ${
-          isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+          isSidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <button onClick={toggleSidebar} className="absolute top-4 right-4 text-white transition-opacity duration-300 ease-in-out opacity-100 hover:opacity-70">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <button
+          onClick={toggleSidebar}
+          className="absolute top-4 right-4 text-white transition-opacity duration-300 ease-in-out opacity-100 hover:opacity-70"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
         <div className="mt-8 transition-opacity duration-500 ease-in-out opacity-100">
           <h2 className="text-xl font-bold mb-4">User Profile</h2>
           {/* Tambahkan konten profil di sini */}
-          <p className="transition-all duration-300 ease-in-out">Name: {user?.name}</p>
-          <p className="transition-all duration-300 ease-in-out">Email: {user?.email}</p>
+          <p className="transition-all duration-300 ease-in-out">
+            Name: {user?.name}
+          </p>
+          <p className="transition-all duration-300 ease-in-out">
+            Email: {user?.email}
+          </p>
           {/* Tambahkan lebih banyak informasi profil jika diperlukan */}
         </div>
       </div>
